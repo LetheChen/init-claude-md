@@ -47,7 +47,6 @@
 - 不要写带 BOM 的 UTF-8 文件（PowerShell 默认行为）
 - 不要从 `examples/` 删文件而不补 README 的目录树
 - 不要把 `description` 字段里的中文触发词写错（之前是 `涓?` 乱码，每个 agent 看到的触发词是错的）
-- 不要在 Codex 上期望硬自动 hook（plugin 只支持 tool-level 事件，**无 SessionEnd**）—— Codex 用户用 `bash scripts/check-session-end.sh` 手跑
-- 不要把 `check-session-end.sh` 改成"自动改文件"脚本（破坏"提醒器不是执行器"的设计，让 agent 失去决定权）
-
+- 不要在 skill 里加 hook / cron / 外部触发器（软自动才是设计核心；外部触发器破坏跨 agent 兼容）
+- 不要去掉根文件顶部的 `## Session Maintenance Protocol` 块（agent 失去结束前自检清单）
 > 最后更新：2026-07-02

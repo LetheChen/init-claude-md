@@ -1,6 +1,6 @@
 ---
 name: init-claude-md
-description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) plus a living TODO.md, following the minimal HumanLayer pattern and Karpathy 4 behavioral rules. Use when the user mentions CLAUDE.md, AGENTS.md, Claude Code / Codex project rules, wants to initialize / set up / create / init / generate / split AI coding guidelines, or needs a TODO.md task board. The skill also bakes a Session Maintenance Protocol into the generated file so every future session auto-updates the rules and TODO based on what actually happened. 中文触发词：生成/初始化/写一个 CLAUDE.md 或 AGENTS.md、补一份 TODO.md、规则文件按目录拆分、规则太多要整理、把这份 CLAUDE.md 拆细。
+description: Generate CLAUDE.md / AGENTS.md + TODO.md for the current project, following the minimal HumanLayer pattern and Karpathy 4 rules. Bakes a Session Maintenance Protocol into the root file so future agents auto-update rules and TODO when they load the file. Use when user mentions CLAUDE.md, AGENTS.md, project rules, init / set up / generate / split / refactor AI coding guidelines, or needs a TODO board. 中文触发词：生成 / 初始化 / 拆细 CLAUDE.md 或 AGENTS.md、补一份 TODO.md、规则文件按目录拆分、规则太多要整理。
 ---
 
 # Init CLAUDE.md / AGENTS.md
@@ -39,11 +39,11 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 
 每次执行本 skill 至少产出 2 类文件（按平台决定文件名）：
 
-| 平台 | 主文件 | 详细规则 | 任务清单 |
-|------|--------|----------|----------|
-| Claude Code | CLAUDE.md | .claude/rules/*.md | TODO.md |
-| Codex (OpenAI) | AGENTS.md | .codex/rules/*.md（可选）| TODO.md |
-| 通用（默认双写） | 两者 | 两者 | TODO.md |
+| 平台             | 主文件       | 详细规则                   | 任务清单    |
+| -------------- | --------- | ---------------------- | ------- |
+| Claude Code    | CLAUDE.md | .claude/rules/\*.md    | TODO.md |
+| Codex (OpenAI) | AGENTS.md | .codex/rules/\*.md（可选） | TODO.md |
+| 通用（默认双写）       | 两者        | 两者                     | TODO.md |
 
 ## 语言策略
 
@@ -71,14 +71,14 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 
 按以下信号判定输出文件名（多个信号取并集）：
 
-| 信号 | 偏好 |
-|------|------|
-| 存在 .claude/ 目录 | Claude Code（写 CLAUDE.md）|
-| 存在 .codex/ 目录 | Codex（写 AGENTS.md）|
-| 已 commit 的 CLAUDE.md | 保留，写 CLAUDE.md |
-| 已 commit 的 AGENTS.md | 保留，写 AGENTS.md |
-| 用户显式说"Codex" / "Claude Code" / "两个都要" | 用户说了算 |
-| 都检测不到 | **默认双写**（最安全）|
+| 信号                                    | 偏好                       |
+| ------------------------------------- | ------------------------ |
+| 存在 .claude/ 目录                        | Claude Code（写 CLAUDE.md） |
+| 存在 .codex/ 目录                         | Codex（写 AGENTS.md）       |
+| 已 commit 的 CLAUDE.md                  | 保留，写 CLAUDE.md           |
+| 已 commit 的 AGENTS.md                  | 保留，写 AGENTS.md           |
+| 用户显式说"Codex" / "Claude Code" / "两个都要" | 用户说了算                    |
+| 都检测不到                                 | **默认双写**（最安全）            |
 
 不要在没有信号时强行猜。
 
@@ -86,12 +86,12 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 
 确认本 skill 是否被 agent 加载到：
 
-| skill 目录检查 | 状态 | 含义 |
-|----------------|------|------|
-| `~/.codex/skills/init-claude-md/SKILL.md` 存在 | 已装 Codex | agent 会自动激活本 skill |
-| `~/.claude/skills/init-claude-md/SKILL.md` 存在 | 已装 Claude Code | agent 会自动激活 |
-| `~/.agents/skills/init-claude-md/SKILL.md` 存在 | 已装通用 agent | agent 会自动激活 |
-| 上面都不存在 | **未装** | 当前文档只读，agent 不会自动触发；告诉用户安装步骤（见 `references/install.md`），**不要**假装激活 |
+| skill 目录检查                                    | 状态             | 含义                                                                 |
+| --------------------------------------------- | -------------- | ------------------------------------------------------------------ |
+| `~/.codex/skills/init-claude-md/SKILL.md` 存在  | 已装 Codex       | agent 会自动激活本 skill                                                 |
+| `~/.claude/skills/init-claude-md/SKILL.md` 存在 | 已装 Claude Code | agent 会自动激活                                                        |
+| `~/.agents/skills/init-claude-md/SKILL.md` 存在 | 已装通用 agent     | agent 会自动激活                                                        |
+| 上面都不存在                                        | **未装**         | 当前文档只读，agent 不会自动触发；告诉用户安装步骤（见 `references/install.md`），**不要**假装激活 |
 
 > **重要**：如果检测到未装，告诉用户怎么装（粘贴 `references/install.md` 里的命令）。**不要**在不装的情况下凭空生成 CLAUDE.md —— 用户会以为是 agent 智能行为，破坏可重复性。
 
@@ -138,16 +138,16 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 
 如果 CLAUDE.md / AGENTS.md 已存在，按下表处理；**不覆盖**用户的真实文本：
 
-| 段 | 处理 |
-|----|------|
-| 缺失段 | 添加并填入检测结果 |
-| 段内容是占位符（`<...>` / 空）| 填充 |
-| 段内容是真实文本 | **保留**，不覆盖 |
-| "Things to avoid" 段 | **追加**到末尾，不删现有条目 |
-| "Verification" 命令 | 仅在原命令跑不通时更新；保留用户已写好的命令 |
-| "Workflow" 分支/提交规范 | 保留用户约定，不擅自改成"标准"约定 |
-| "Session Maintenance Protocol" 段 | 重新生成（这是 skill 自身维护的，不属于用户手写）|
-| "Language" 段 | 重新生成（4 字段必填）|
+| 段                                | 处理                           |
+| -------------------------------- | ---------------------------- |
+| 缺失段                              | 添加并填入检测结果                    |
+| 段内容是占位符（`<...>` / 空）             | 填充                           |
+| 段内容是真实文本                         | **保留**，不覆盖                   |
+| "Things to avoid" 段              | **追加**到末尾，不删现有条目             |
+| "Verification" 命令                | 仅在原命令跑不通时更新；保留用户已写好的命令       |
+| "Workflow" 分支/提交规范               | 保留用户约定，不擅自改成"标准"约定           |
+| "Session Maintenance Protocol" 段 | 重新生成（这是 skill 自身维护的，不属于用户手写） |
+| "Language" 段                     | 重新生成（4 字段必填）                 |
 
 **反例**：不要因为"检测到 package manager 是 npm"就覆盖用户写的 "我们用 pnpm"。
 **反例**：不要因为"惯例是 Conventional Commits"就覆盖用户写的"用 gitmoji"。
@@ -180,7 +180,7 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 - 顶层目录里 README 提到的"待办"/"TODO" → 🟡
 - 没扫到 → **留空，不编造**（这是核心原则）
 
-### Step 6：生成 .claude/rules/*.md（仅 Layout B / C）
+### Step 6：生成 .claude/rules/\*.md（仅 Layout B / C）
 
 按 `references/rule-file-template.md` 模板。每个文件：
 
@@ -220,25 +220,6 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 ```
 
 英文版（用于 Language 段 Communication=`en` 的项目）见 `references/session-maintenance-protocol.md` 末尾，骨架一样，仅文案翻译。
-
-### Step 7.5：硬自动 hook（可选增强）
-
-默认的协议块是**软自动**（agent 自觉执行）。要做**硬自动**，在 AI agent 的 hook 系统里注册 session-end 触发器：
-
-- **Claude Code**：把 `references/hooks/claude-code-settings.json` 粘到 `~/.claude/settings.json` 的 `hooks` 字段（合并而非覆盖整个文件）
-- **Codex**：plugin 系统只支持 tool-level hooks（`PreToolUse` / `PostToolUse`），**没有 SessionEnd 事件**。Codex 用户推荐**手跑** `bash scripts/check-session-end.sh`（或 PowerShell 版本）
-- **其他 agent**：调 `scripts/check-session-end.sh` 的等价物
-
-`scripts/check-session-end.sh` / `.ps1` 是跨平台检查脚本，行为：
-
-1. 找项目根（`git rev-parse --show-toplevel`）
-2. 探测 `CLAUDE.md` 或 `AGENTS.md`
-3. 数 `git diff --name-only HEAD` 改了多文件
-4. 打印决策表提示
-
-**脚本只输出建议，不自动改文件**（避免 agent 写错）。是**提醒器**不是**执行器**。
-
-完整说明见 `references/session-end-hook.md`。
 
 ### Step 8：自检清单
 
@@ -293,12 +274,12 @@ Next:
 
 ### 决策表（短版）
 
-| 操作 | 规则 |
-|------|------|
-| 完成某项 | 从当前段移除 → 移到 `✅ 已完成`，加 `(YYYY-MM-DD)` 后缀 |
+| 操作    | 规则                                           |
+| ----- | -------------------------------------------- |
+| 完成某项  | 从当前段移除 → 移到 `✅ 已完成`，加 `(YYYY-MM-DD)` 后缀      |
 | 发现新问题 | 加到 `🟡 待处理`（P1/P2）或 `🟢 后续`（P3+），标注优先级 + 源链接 |
-| 开始做某项 | 移到 `🔴 进行中` |
-| 放弃某项 | 移到 `✅ 已完成`，备注 `已放弃：<原因>` |
+| 开始做某项 | 移到 `🔴 进行中`                                  |
+| 放弃某项  | 移到 `✅ 已完成`，备注 `已放弃：<原因>`                     |
 
 ### 维护原则
 
@@ -329,8 +310,9 @@ Next:
 
 - `references/install.md` — 把本 skill 装到 `~/.codex/skills/` / `~/.claude/skills/` 的步骤
 - `references/quick-start.md` — 5 分钟上手（生成 → 检查 → 提交 → 维护）
-- `references/session-end-hook.md` — **硬自动 hook 配置**（让 session 真正结束时自动跑检查脚本）
-- `references/hooks/claude-code-settings.json` — Claude Code `SessionEnd` hook 模板（粘到 `~/.claude/settings.json`）
-- `references/hooks/codex-plugin.json` — Codex plugin hook 模板（**PostToolUse 近似**，Codex 无 SessionEnd 事件）
-- `scripts/check-session-end.sh` — bash 跨平台检查脚本
-- `scripts/check-session-end.ps1` — PowerShell 检查脚本（英文输出避开 chcp 936 乱码）
+
+## 更新机制
+
+本 skill 不带 hook / cron / 外部触发器。`## Session Maintenance Protocol` 块嵌入在生成的根文件（CLAUDE.md / AGENTS.md）**顶部**，agent 每次新会话自动加载根文件，看到协议块就按决策表更新 TODO.md。
+
+**这是软自动**：依赖 agent 自觉执行。优点是跨所有 agent、零依赖；代价是上下文太挤或任务急时可能跳过。决策表本身（`references/session-maintenance-protocol.md`）是 single source of truth，根文件短版必须与之锁步。
