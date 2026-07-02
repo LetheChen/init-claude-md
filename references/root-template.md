@@ -1,51 +1,73 @@
-# Root CLAUDE.md template
+# Root CLAUDE.md / AGENTS.md template
 
-Use this exact skeleton, fill in placeholders, keep total under 60 lines.
+按此骨架填充，总行数 ≤60 行（不含代码块）。**前 ~25 行预留 Session Maintenance Protocol 块**——不要跳过。
 
 ```markdown
 # CLAUDE.md
 
-Behavioral guidelines for working on `<project-name>`.
+## Session Maintenance Protocol
 
-## Core rules
-1. **Think Before Coding** — surface assumptions, ask, push back on simpler alternatives.
-2. **Simplicity First** — minimum code, no speculative features, no premature abstractions.
-3. **Surgical Changes** — touch only what's required, match existing style, clean up only your own mess.
-4. **Goal-Driven Execution** — turn requests into verifiable goals, loop until tests pass.
+**开始时**：读 `TODO.md`，复述当前 🔴 和 🟡 段，确认本次会话要推进哪几项。
+
+**结束前**（最后一条用户消息之后、停止前必做）：
+
+1. **回看本次会话实际做了什么** —— 改动的文件、发现的问题、用户新增的约束
+2. **更新 `TODO.md`**（决策表见 `references/session-maintenance-protocol.md`）：
+   - 完成了某项 → 移到 ✅ 段，加 `(YYYY-MM-DD)`
+   - 新发现的问题 → 加到 🟡（P1/P2）或 🟢（P3+），附源链接
+   - 放弃某项 → 移到 ✅ 段，备注 `已放弃：<原因>`
+3. **更新本文件的规则** —— 如果本次会话暴露了新的项目级约定：
+   - 用户反复纠正的行为 → 加到 `## Things to avoid` 段
+   - 反复跑错的命令 → 更新 `## Verification` 段
+   - 隐含约定 → 加到 `## Project conventions` 段
+4. **刷新日期戳** `> 最后更新：YYYY-MM-DD`（即使其他都没变）
+
+**触发条件**（满足任一即必须更新 TODO.md）：≥1 个源文件被改 · 用户新增了约束 · 会话 > 10 分钟
+
+## Core rules (from Karpathy)
+1. Think Before Coding — surface assumptions, push back when warranted
+2. Simplicity First — minimum code that solves the problem
+3. Surgical Changes — touch only what you must
+4. Goal-Driven Execution — define success criteria, loop until verified
+
+## Language
+- Communication: `<zh | en | bilingual>` (matches user preference)
+- Code comments: `<zh | en>`
+- Commit messages: `<en | zh>` (Conventional Commits format)
+- Rule files: `<zh | en | bilingual>`
 
 ## Project conventions
-- Package manager: `<pnpm | npm | yarn | bun | pip | poetry | uv | cargo | go>`
-- Test: `<e.g. pnpm test>`
-- Typecheck: `<e.g. pnpm run typecheck>`
-- Lint: `<e.g. pnpm run lint>`
-- Format: `<e.g. pnpm run format>`
+- Package manager: <detected>
+- Test: <command>
+- Typecheck/Lint: <command>
+- 1-3 个项目特定坑
 
 ## Workflow
-- Branch: `<prefix>/<issue-id>-<slug>` (e.g. `feat/ENG-1234-fix-login`)
-- Commit: `<type>(<scope>): <summary>` — types: feat, fix, refactor, docs, test, chore
-- PR: open against `main`, link the issue, fill the PR template
+- Branch: <detected or `codex/` / `feat/`>
+- Commit: Conventional Commits
+- **TODO.md**：每次会话结束时检查根目录 `TODO.md`，按决策表更新
 
 ## Verification
-Run `<typecheck> && <test> --changed` before stopping. Failures are required reading — do not ignore them.
+Run `<typecheck> && <test> --changed` before stopping. Failures are required reading.
 
 ## Things to avoid
-- Do not <project-specific ban 1>
-- Do not <project-specific ban 2>
-- Do not <project-specific ban 3>
+- 3-5 条本项目硬性禁止
 ```
 
-## Hard constraints
+## 硬约束
 
-- The whole file MUST be under 60 lines (excluding code blocks).
-- NO directory tree, NO codebase overview, NO module list — let the agent discover.
-- NO generic advice that isn't enforced (e.g. "write clean code").
-- Every "do not" must be specific and verifiable.
-- The verification command MUST actually exist in `package.json` / `Makefile` / equivalent.
+- 总行数 ≤60 行（不含代码块）
+- **不写**目录树、架构概览、模块列表 —— 让 agent 自己 discover
+- **不写**不可验证的废话（"write clean code"）
+- 每条 "do not" 必须具体且可验证
+- `Verification` 命令必须真的能跑（用 `bash -c '<cmd>'` 试一次）
+- **Session Maintenance Protocol 块必须在顶部**，不要放底部 —— agent 自上而下读
 
-## How to fill placeholders
+## 如何填充占位符
 
-1. **Package manager**: read `package.json` lockfile, `pyproject.toml`, `Cargo.toml`, `go.mod`, etc.
-2. **Test command**: read `scripts` in `package.json`, `[tool.pytest]` in pyproject, `Makefile` targets.
-3. **Typecheck**: look for `tsc`, `mypy`, `pyright`, `go vet`, `cargo check`.
-4. **Lint**: look for `eslint`, `biome`, `ruff`, `flake8`, `golangci-lint`.
-5. **Project-specific bans**: read the README's "Contributing" section, any existing CONTRIBUTING.md, and look for repeated patterns in the codebase (e.g. a `// FIXME: do not do X` comment).
+1. **Package manager**：看 `package.json` lockfile / `pyproject.toml` / `Cargo.toml` / `go.mod` 等
+2. **Test / Typecheck / Lint 命令**：看 `package.json` scripts / `pyproject.toml` `[tool.pytest]` / `Makefile` 目标
+3. **项目特定禁止**：读 README 的 "Contributing" 段、`CONTRIBUTING.md`，扫代码里反复出现的 `// FIXME: do not do X` 注释
+4. **Language 段**：按 SKILL.md 的 4 字段规则检测（README 前 50 行 vs 用户首条消息语言）
+
+完整 Session Maintenance Protocol 决策表见 `references/session-maintenance-protocol.md`。
