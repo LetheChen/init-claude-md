@@ -1,4 +1,4 @@
-﻿# OS-generated files
+# OS-generated files
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -17,7 +17,3 @@ __pycache__/
 
 # Node
 node_modules/
-
-# Generated output from testing the skill
-CLAUDE.md
-.claude/
