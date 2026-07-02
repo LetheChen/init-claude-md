@@ -13,10 +13,8 @@
 
 ## 🟢 后续
 
-- 给仓库加 CI 检查：拒绝 UTF-8 BOM（PowerShell 默认写出会带 BOM）
-- 给仓库加 markdownlint 配置（统一 references/ 和 examples/ 的格式）
-- 在 `examples/` 补一个 `api-conventions.md` 范例 rule 文件
-- 把"3 AM 测试"翻译成英文版写进 references/（当前只中文）
+- 翻译"3 AM 测试"为英文版（README 中文版独有，英文版需要同步）
+- 评估在 `references/session-maintenance-protocol.md` 加 Node.js 钩子脚本（跨平台，不依赖 PowerShell/Bash）
 
 ## ✅ 已完成
 
@@ -28,3 +26,10 @@
 - [x] 更新 `references/root-template.md`、`rules-splitter.md`、`content-rules.md` (2026-07-02)
 - [x] 本仓库 self-dogfood：AGENTS.md + CLAUDE.md + TODO.md 三件套都带协议头 + Language 段 (2026-07-02)
 - [x] 修复 `AGENTS.md` / `CLAUDE.md` 带 UTF-8 BOM 的问题（统一 no-BOM）(2026-07-02)
+- [x] 新增 `references/session-end-hook.md` + `install.md` + `quick-start.md`（安装 / 硬自动 hook / 5 分钟上手）(2026-07-02)
+- [x] 新增 `references/hooks/claude-code-settings.json` + `codex-plugin.json`（hook 配置模板）(2026-07-02)
+- [x] 新增 `scripts/check-session-end.sh` + `check-session-end.ps1`（跨平台检查脚本，PowerShell 版输出英文避开 chcp 936 乱码）(2026-07-02)
+- [x] 新增 `examples/api-conventions.md`（rule 文件范例：带 paths: frontmatter + good/bad 示例）(2026-07-02)
+- [x] 修复 `examples/karpathy-CLAUDE.md` 缺 `## Language` 段、`monorepo-package-AGENTS.md` 缺 `paths:` frontmatter（与 SKILL.md 描述对齐）(2026-07-02)
+- [x] SKILL.md 加 Step 0.5（环境检测）+ Step 7.5（硬自动 hook 可选增强）(2026-07-02)
+- [x] README.md 加"硬自动 hook"段（中英双版）+ 同步目录结构（10 个新文件入口）(2026-07-02)

@@ -82,6 +82,19 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 
 不要在没有信号时强行猜。
 
+### Step 0.5：环境检测（首次运行）
+
+确认本 skill 是否被 agent 加载到：
+
+| skill 目录检查 | 状态 | 含义 |
+|----------------|------|------|
+| `~/.codex/skills/init-claude-md/SKILL.md` 存在 | 已装 Codex | agent 会自动激活本 skill |
+| `~/.claude/skills/init-claude-md/SKILL.md` 存在 | 已装 Claude Code | agent 会自动激活 |
+| `~/.agents/skills/init-claude-md/SKILL.md` 存在 | 已装通用 agent | agent 会自动激活 |
+| 上面都不存在 | **未装** | 当前文档只读，agent 不会自动触发；告诉用户安装步骤（见 `references/install.md`），**不要**假装激活 |
+
+> **重要**：如果检测到未装，告诉用户怎么装（粘贴 `references/install.md` 里的命令）。**不要**在不装的情况下凭空生成 CLAUDE.md —— 用户会以为是 agent 智能行为，破坏可重复性。
+
 ### Step 1：项目扫描
 
 并行读取以下文件（Codex 用 `shell_command`，Claude Code 用 `Read`）：
@@ -208,6 +221,25 @@ description: Generate or refactor a project-specific CLAUDE.md (or AGENTS.md) pl
 
 英文版（用于 Language 段 Communication=`en` 的项目）见 `references/session-maintenance-protocol.md` 末尾，骨架一样，仅文案翻译。
 
+### Step 7.5：硬自动 hook（可选增强）
+
+默认的协议块是**软自动**（agent 自觉执行）。要做**硬自动**，在 AI agent 的 hook 系统里注册 session-end 触发器：
+
+- **Claude Code**：把 `references/hooks/claude-code-settings.json` 粘到 `~/.claude/settings.json` 的 `hooks` 字段（合并而非覆盖整个文件）
+- **Codex**：plugin 系统只支持 tool-level hooks（`PreToolUse` / `PostToolUse`），**没有 SessionEnd 事件**。Codex 用户推荐**手跑** `bash scripts/check-session-end.sh`（或 PowerShell 版本）
+- **其他 agent**：调 `scripts/check-session-end.sh` 的等价物
+
+`scripts/check-session-end.sh` / `.ps1` 是跨平台检查脚本，行为：
+
+1. 找项目根（`git rev-parse --show-toplevel`）
+2. 探测 `CLAUDE.md` 或 `AGENTS.md`
+3. 数 `git diff --name-only HEAD` 改了多文件
+4. 打印决策表提示
+
+**脚本只输出建议，不自动改文件**（避免 agent 写错）。是**提醒器**不是**执行器**。
+
+完整说明见 `references/session-end-hook.md`。
+
 ### Step 8：自检清单
 
 声明完成前必跑：
@@ -289,3 +321,16 @@ Next:
 - `examples/TODO.md` — 完整 TODO.md 范例
 - `examples/humanlayer-CLAUDE.md` — HumanLayer 模式范例
 - `examples/karpathy-CLAUDE.md` — 纯 Karpathy 模式范例
+- `examples/monorepo-root-CLAUDE.md` — Monorepo workspace 根文件范例（Layout C）
+- `examples/monorepo-package-AGENTS.md` — Monorepo 子包文件范例（带 `paths:` frontmatter）
+- `examples/api-conventions.md` — 单个 rule 文件范例（带 `paths:` frontmatter + good/bad 示例）
+
+## 安装与使用
+
+- `references/install.md` — 把本 skill 装到 `~/.codex/skills/` / `~/.claude/skills/` 的步骤
+- `references/quick-start.md` — 5 分钟上手（生成 → 检查 → 提交 → 维护）
+- `references/session-end-hook.md` — **硬自动 hook 配置**（让 session 真正结束时自动跑检查脚本）
+- `references/hooks/claude-code-settings.json` — Claude Code `SessionEnd` hook 模板（粘到 `~/.claude/settings.json`）
+- `references/hooks/codex-plugin.json` — Codex plugin hook 模板（**PostToolUse 近似**，Codex 无 SessionEnd 事件）
+- `scripts/check-session-end.sh` — bash 跨平台检查脚本
+- `scripts/check-session-end.ps1` — PowerShell 检查脚本（英文输出避开 chcp 936 乱码）

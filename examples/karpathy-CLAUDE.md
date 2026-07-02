@@ -23,6 +23,12 @@
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
+## Language
+- Communication: `en`
+- Code comments: `en`
+- Commit messages: `en` (Conventional Commits)
+- Rule files: `en`
+
 ## 1. Think Before Coding
 
 **Don'\''t assume. Don'\''t hide confusion. Surface tradeoffs.**

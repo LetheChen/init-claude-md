@@ -1,0 +1,21 @@
+{
+  "_comment": "Codex 的 plugin hook 只支持 tool-level 事件（PreToolUse / PostToolUse），没有 SessionEnd。",
+  "_recommendation": "Codex 用户不要装这个 plugin —— PostToolUse 噪音太大。手跑 bash scripts/check-session-end.sh 更稳。",
+  "_comment2": "如果一定要装，把以下 hooks 段合并到 ~/.codex/plugins/init-claude-md-hook/plugin.json",
+  "name": "init-claude-md-hook",
+  "version": "0.1.0",
+  "description": "PostToolUse approximation of session-end check for Codex (no SessionEnd event available)",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"\$(git rev-parse --show-toplevel)/scripts/check-session-end.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

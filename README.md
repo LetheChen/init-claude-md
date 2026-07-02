@@ -172,12 +172,22 @@ init-claude-md/
 │   ├── content-rules.md                    # 内容取舍规则（放什么、不放什么）
 │   ├── rules-splitter.md                   # Layout A/B/C 决策树 + 检测矩阵
 │   ├── karpathy-rules.md                   # Karpathy 4 条准则原文
-│   └── session-maintenance-protocol.md     # **会话维护决策表（核心新机制）**
+│   ├── session-maintenance-protocol.md     # **会话维护决策表（核心新机制）**
+│   ├── session-end-hook.md                 # 硬自动 hook 配置（可选增强）
+│   ├── install.md                          # 安装到 ~/.codex/skills/ 的步骤
+│   ├── quick-start.md                      # 5 分钟上手指南
+│   └── hooks/
+│       ├── claude-code-settings.json       # Claude Code SessionEnd hook 模板
+│       └── codex-plugin.json               # Codex plugin PostToolUse 近似模板
+├── scripts/
+│   ├── check-session-end.sh                # bash 跨平台检查脚本
+│   └── check-session-end.ps1               # PowerShell 检查脚本
 ├── examples/
 │   ├── humanlayer-CLAUDE.md                # HumanLayer 模式范例（带协议头）
-│   ├── karpathy-CLAUDE.md                  # 纯 Karpathy 模式范例（带协议头）
+│   ├── karpathy-CLAUDE.md                  # 纯 Karpathy 模式范例（带协议头 + Language 段）
 │   ├── monorepo-root-CLAUDE.md             # Layout C: workspace 根
-│   ├── monorepo-package-AGENTS.md          # Layout C: 子包
+│   ├── monorepo-package-AGENTS.md          # Layout C: 子包（带 paths: frontmatter）
+│   ├── api-conventions.md                  # 单个 rule 文件范例（带 paths: + good/bad 示例）
 │   └── TODO.md                             # 完整 TODO.md 范例
 ├── README.md
 ├── .gitignore
@@ -185,6 +195,25 @@ init-claude-md/
 ```
 
 ---
+
+## 硬自动 hook（可选增强）
+
+Session Maintenance Protocol 默认是**软自动**：agent 读根文件时自觉执行。**依赖 agent 自觉**意味着如果上下文太长或任务中断，TODO 可能不会更新。
+
+要做**硬自动**（agent 想忘也忘不了），在 AI agent 的 hook 系统里注册 session-end 触发器：
+
+| Agent | 配置方式 | 触发时机 |
+|-------|---------|---------|
+| **Claude Code** | 把 `references/hooks/claude-code-settings.json` 粘到 `~/.claude/settings.json` 的 `hooks.SessionEnd` 字段 | session 真正结束时 |
+| **Codex** | Codex plugin 无 SessionEnd 事件；推荐**手跑** `bash scripts/check-session-end.sh`（或 `.ps1`） | 手动触发 |
+| **其他 agent** | 调 `scripts/check-session-end.sh` 的等价物 | 视 agent 能力 |
+
+**脚本只输出建议，不自动改文件**（避免 agent 写错）。是**提醒器**不是**执行器**。
+
+完整说明见 `references/session-end-hook.md`。
+
+---
+
 
 ## 跨平台兼容
 
@@ -376,27 +405,58 @@ See [`examples/`](examples/) for complete output examples, including TODO.md and
 
 ```
 init-claude-md/
-├── SKILL.md
-├── AGENTS.md / CLAUDE.md / TODO.md
+├── SKILL.md                                # skill entry -- agent workflow (Chinese body)
+├── AGENTS.md                               # this repo's Codex rule file (self-dogfood)
+├── CLAUDE.md                               # this repo's Claude Code rule file
+├── TODO.md                                 # this repo's task board
 ├── references/
-│   ├── root-template.md
-│   ├── rule-file-template.md
-│   ├── content-rules.md
-│   ├── rules-splitter.md
-│   ├── karpathy-rules.md
-│   └── session-maintenance-protocol.md
+│   ├── root-template.md                    # root CLAUDE.md skeleton (with protocol header)
+│   ├── rule-file-template.md               # per-rule-file skeleton + paths: docs
+│   ├── content-rules.md                    # content curation rules (in/out)
+│   ├── rules-splitter.md                   # Layout A/B/C decision tree + detection matrix
+│   ├── karpathy-rules.md                   # Karpathy 4 rules verbatim
+│   ├── session-maintenance-protocol.md     # **session maintenance decision table (core)**
+│   ├── session-end-hook.md                 # hard-auto hook config (optional)
+│   ├── install.md                          # install to ~/.codex/skills/
+│   ├── quick-start.md                      # 5-minute onboarding
+│   └── hooks/
+│       ├── claude-code-settings.json       # Claude Code SessionEnd hook template
+│       └── codex-plugin.json               # Codex plugin PostToolUse approximation
+├── scripts/
+│   ├── check-session-end.sh                # bash cross-platform checker
+│   └── check-session-end.ps1               # PowerShell checker
 ├── examples/
-│   ├── humanlayer-CLAUDE.md
-│   ├── karpathy-CLAUDE.md
-│   ├── monorepo-root-CLAUDE.md
-│   ├── monorepo-package-AGENTS.md
-│   └── TODO.md
+│   ├── humanlayer-CLAUDE.md                # HumanLayer pattern (with protocol header)
+│   ├── karpathy-CLAUDE.md                  # pure Karpathy pattern (with protocol + Language)
+│   ├── monorepo-root-CLAUDE.md             # Layout C: workspace root
+│   ├── monorepo-package-AGENTS.md          # Layout C: sub-package (with paths: frontmatter)
+│   ├── api-conventions.md                  # rule file example (paths: + good/bad)
+│   └── TODO.md                             # complete TODO.md example
 ├── README.md
 ├── .gitignore
 └── LICENSE
 ```
 
 ---
+
+## Hard-auto hook (optional)
+
+The Session Maintenance Protocol is **soft-auto** by default: the agent reads the root file and self-executes. That depends on the agent actually being attentive -- if context is too long or the task gets interrupted, the TODO may not update.
+
+For **hard-auto** (the agent can't forget), register a session-end trigger in the AI agent's hook system:
+
+| Agent | Setup | Trigger |
+|-------|-------|---------|
+| **Claude Code** | Merge `references/hooks/claude-code-settings.json` into `~/.claude/settings.json` under `hooks.SessionEnd` | real session end |
+| **Codex** | Codex plugins have no SessionEnd event; recommended to **manually run** `bash scripts/check-session-end.sh` (or `.ps1`) | manual |
+| **Other agents** | Call an equivalent of `scripts/check-session-end.sh` | agent-dependent |
+
+**The script only outputs suggestions, never modifies files** (avoids agent writing errors). It's a **reminder**, not an **executor**.
+
+Full docs: `references/session-end-hook.md`.
+
+---
+
 
 ## Platform compatibility
 

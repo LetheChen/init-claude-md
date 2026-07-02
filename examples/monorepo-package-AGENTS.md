@@ -1,3 +1,9 @@
+---
+paths:
+  - "apps/web/**"
+  - "apps/web/*"
+---
+
 # AGENTS.md (apps/web)
 
 ## Session Maintenance Protocol

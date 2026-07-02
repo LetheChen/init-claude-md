@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 ## Session Maintenance Protocol
 
@@ -47,5 +47,7 @@
 - 不要写带 BOM 的 UTF-8 文件（PowerShell 默认行为）
 - 不要从 `examples/` 删文件而不补 README 的目录树
 - 不要把 `description` 字段里的中文触发词写错（之前是 `涓?` 乱码，每个 agent 看到的触发词是错的）
+- 不要在 Codex 上期望硬自动 hook（plugin 只支持 tool-level 事件，**无 SessionEnd**）—— Codex 用户用 `bash scripts/check-session-end.sh` 手跑
+- 不要把 `check-session-end.sh` 改成"自动改文件"脚本（破坏"提醒器不是执行器"的设计，让 agent 失去决定权）
 
 > 最后更新：2026-07-02
