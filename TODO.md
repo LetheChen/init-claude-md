@@ -1,6 +1,6 @@
 # 待办清单
 
-> 最后更新：2026-07-02
+> 最后更新：2026-07-03
 > 维护规则：会话开始时读，会话结束时按 `references/session-maintenance-protocol.md` 更新
 
 ## 🔴 进行中
@@ -29,3 +29,6 @@
 - [x] 新增 `examples/api-conventions.md`（rule 文件范例：带 paths: frontmatter + good/bad 示例）(2026-07-02)
 - [x] 清理 hook 资产：删 `references/session-end-hook.md` + `references/hooks/` 2 个 json + `scripts/` 2 个脚本；SKILL.md 删 Step 7.5 + 改"安装与使用"段为"更新机制"；README.md 删中英双版 hook 段 + 同步目录树；quick-start.md 删"启用硬自动"段 (2026-07-02)
 - [x] AGENTS.md / CLAUDE.md：删 2 条 hook 警告（"Codex 无 SessionEnd"/"check-session-end.sh 改成自动改文件"），加 2 条软自动设计警告（"不要加 hook / cron / 外部触发器"/"不要去掉根文件顶部的 Session Maintenance Protocol 块"）(2026-07-02)
+- [x] 用 skill-creator 原则审视并优化：SKILL.md 删 3 段冗余（"何时使用" 28 行 / Step 0.5 环境检测 13 行 / "TODO.md 维护机制" 36 行）→ 318 → 205 行；修复 21 处 PowerShell 字符串处理损坏（15 处 `\r`→CR 单字符 + 3 处 `\a`→BEL + 2 处 `\b`→BS + 1 处 `\v`→VT + 1 处 `\n`→LF 单字符导致 CRLF 跨行丢失）；README.md 删英文双版（184 行）+ 哲学段 + 致谢段 → 464 → 177 行；修复 5 处同源字符损坏（2 处 `\r` + 1 处 `\a` + 1 处 `\v` + 1 处 `\n`）；全仓库累计 26 处（SKILL.md 21 + README.md 5）；尾部三段合并成参考资料表格 (2026-07-03)
+- [x] AGENTS.md / CLAUDE.md 刷日期戳 2026-07-03
+- [x] AGENTS.md / CLAUDE.md Things to avoid 段加 1 条 PowerShell 写文件警告（`Get-Content | Set-Content` 会丢 CRLF + 解释 `\a` `\b` `\v` 控制字符；改用 `ReadAllBytes/WriteAllBytes` 字节级操作）(2026-07-03)
