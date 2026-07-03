@@ -32,9 +32,9 @@
 - `references/session-maintenance-protocol.md` 是 single source of truth，根文件里的短版必须与之保持一致
 
 ## Workflow
-- Branch: `codex/<scope>-<slug>`
+- Branch: `codex/<scope>-<slug>`（solo 维护时直接用 main，feature branch 可选）
 - Commit: Conventional Commits（`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`）
-- PR: GitHub Flow，merge 到 main
+- **Solo 维护者**：直接 `git push origin main`，commit log 即 audit trail
 - **TODO.md**：每次会话结束时按决策表更新
 
 ## Verification
