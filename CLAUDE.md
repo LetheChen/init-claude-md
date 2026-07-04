@@ -46,6 +46,7 @@
 - 不要改 `SKILL.md` 时漏改 `references/`（决策表 / 模板 / 检测矩阵三者必须锁步）
 - 不要写带 BOM 的 UTF-8 文件（PowerShell 默认行为）
 - 不要从 `examples/` 删文件而不补 README 的目录树
+- 不要在 README 里用单反引号包裹多行内容（GitHub 会渲染成一行）。多行示例一律用 fenced code block (` ```text ` 或 ` ```markdown `)；嵌套示例用 4 个反引号
 - 不要把 `description` 字段里的中文触发词写错（之前是 `涓?` 乱码，每个 agent 看到的触发词是错的）
 - 不要用 PowerShell Get-Content | Set-Content 改 Markdown（CRLF 会丢成 LF-only、\a \b \v 会被 PS 解释成控制字符）。用 [System.IO.File]::ReadAllBytes/WriteAllBytes 字节级操作
 - 不要在 skill 里加 hook / cron / 外部触发器（软自动才是设计核心；外部触发器破坏跨 agent 兼容）

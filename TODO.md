@@ -1,6 +1,6 @@
 # 待办清单
 
-> 最后更新：2026-07-04
+> 最后更新：2026-07-05
 > 维护规则：会话开始时读，会话结束时按 `references/session-maintenance-protocol.md` 更新
 
 ## 🔴 进行中
