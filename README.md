@@ -13,11 +13,11 @@ Works on both Codex (OpenAI) and Claude Code (Anthropic).
 
 在项目根目录触发：
 
-`
+```text
 init CLAUDE.md
 生成 CLAUDE.md
 set up Claude Code rules for this project
-`
+```
 
 技能会自动：
 
@@ -32,15 +32,15 @@ set up Claude Code rules for this project
 
 ### Codex (OpenAI)
 
-`
+```text
 codex skill install init-claude-md
-`
+```
 
 ### Claude Code (Anthropic)
 
-`
+```text
 git clone https://github.com/LetheChen/init-claude-md ~/.agents/skills/init-claude-md
-`
+```
 
 详细步骤见 [references/install.md](references/install.md)。
 
@@ -48,7 +48,7 @@ git clone https://github.com/LetheChen/init-claude-md ~/.agents/skills/init-clau
 
 完整示例见 [examples/](examples/)：
 
-`markdown
+````markdown
 # CLAUDE.md
 
 ## Session Maintenance Protocol
@@ -57,7 +57,7 @@ git clone https://github.com/LetheChen/init-claude-md ~/.agents/skills/init-clau
 
 **结束前**（最后一条用户消息之后、停止前必做）：
 1. 回看本次会话实际做了什么
-2. 更新 TODO.md（决策表见 \references/session-maintenance-protocol.md）
+2. 更新 TODO.md（决策表见 [references/session-maintenance-protocol.md](references/session-maintenance-protocol.md)）
 3. 更新本文件的规则（如果本次暴露了新约定）
 4. 刷新日期戳
 
@@ -87,11 +87,11 @@ Run pnpm run typecheck && pnpm test --changed before stopping.
 - Do not add dependencies without justification
 - Do not refactor unrelated code in a fix
 - Do not commit secrets or .env files
-`
+````
 
 Rule file — 只在 Agent 触及匹配路径时加载：
 
-`markdown
+````markdown
 ---
 paths:
   - src/db/**
@@ -104,11 +104,11 @@ paths:
 - Always use prisma. for multi-statement operations
 - Migration files are immutable after commit
 - Seed data must be idempotent
-`
+````
 
 ## 生成的 TODO.md 长什么样
 
-`markdown
+````markdown
 # 待办清单
 
 > 最后更新：2026-07-03
@@ -125,13 +125,13 @@ paths:
 
 ## ✅ 已完成
 - [x] 初始化项目 CLAUDE.md + TODO.md (2026-07-03)
-`
+````
 
 完整范例见 [examples/TODO.md](examples/TODO.md)。
 
 ## 目录结构
 
-`
+```text
 init-claude-md/
 ├── SKILL.md                                # 技能入口 — Agent 工作流指令（中文主体）
 ├── AGENTS.md                               # 本仓库自己的 Codex 规则文件（self-dogfooding 范例）
@@ -163,7 +163,7 @@ init-claude-md/
     │   ├── feature_request.md
     │   └── config.yml
     └── PULL_REQUEST_TEMPLATE.md
-`
+```
 
 ## 跨平台兼容
 
