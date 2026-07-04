@@ -1,6 +1,6 @@
 # 待办清单
 
-> 最后更新：2026-07-03
+> 最后更新：2026-07-04
 > 维护规则：会话开始时读，会话结束时按 `references/session-maintenance-protocol.md` 更新
 
 ## 🔴 进行中
@@ -9,7 +9,7 @@
 
 ## 🟡 待处理
 
-- _(暂无 — 初始化扫描未发现 TODO/FIXME/HACK 标记)_
+- 更新 GitHub 仓库元数据（description、topics）— 需手动在网页操作
 
 ## 🟢 后续
 
@@ -33,3 +33,4 @@
 - [x] AGENTS.md / CLAUDE.md 刷日期戳 2026-07-03
 - [x] AGENTS.md / CLAUDE.md Things to avoid 段加 1 条 PowerShell 写文件警告（`Get-Content | Set-Content` 会丢 CRLF + 解释 `\a` `\b` `\v` 控制字符；改用 `ReadAllBytes/WriteAllBytes` 字节级操作）(2026-07-03)
 - [x] 发布流程切换到 solo push-to-main：fast-forward 本地 main 到 5967a8f 后 push origin/main；AGENTS.md / CLAUDE.md Workflow 段改 "PR: GitHub Flow" → "Solo 维护者直接 push origin/main" (2026-07-03)
+- [x] 更新维护 GitHub 开源信息：修复 README 占位符/路径、添加 .github/ISSUE_TEMPLATE + PR_TEMPLATE、添加 CONTRIBUTING.md、更新 LICENSE 年份 (2026-07-04)

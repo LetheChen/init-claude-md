@@ -50,4 +50,4 @@
 - 不要用 PowerShell Get-Content | Set-Content 改 Markdown（CRLF 会丢成 LF-only、\a \b \v 会被 PS 解释成控制字符）。用 [System.IO.File]::ReadAllBytes/WriteAllBytes 字节级操作
 - 不要在 skill 里加 hook / cron / 外部触发器（软自动才是设计核心；外部触发器破坏跨 agent 兼容）
 - 不要去掉根文件顶部的 `## Session Maintenance Protocol` 块（agent 失去结束前自检清单）
-> 最后更新：2026-07-03
+> 最后更新：2026-07-04
