@@ -260,7 +260,9 @@ MIT — use it, fork it, ship it. Attribution appreciated but not required.
 
 如果这个 skill 帮到了你，**点个 ⭐ Star** 就是最大的支持 ✨
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LetheChen/init-claude-md&type=Date)](https://star-history.com/#LetheChen/init-claude-md&Date)
+👉 **[Star this repo](https://github.com/LetheChen/init-claude-md)** · 👀 **[Watch → All Activity](https://github.com/LetheChen/init-claude-md/watchers)**
+
+星标曲线图：[star-history.com/#LetheChen/init-claude-md](https://star-history.com/#LetheChen/init-claude-md)（star-history.com 偶尔 503，刷新即可）
 
 ---
 

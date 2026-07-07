@@ -9,7 +9,59 @@
 
 ## 🟡 待处理
 
-- 更新 GitHub 仓库元数据（description、topics）— 需手动在网页操作
+### GitHub 网页手动操作清单（你来做）
+
+打开 https://github.com/LetheChen/init-claude-md/settings 操作：
+
+**1. About 区域（齿轮 ⚙️）**
+
+| 字段 | 值 |
+| --- | --- |
+| Description | `Generate CLAUDE.md / AGENTS.md + TODO.md for your project. HumanLayer minimal pattern + Karpathy 4 rules + Session Maintenance Protocol. Works on Codex & Claude Code. Zero hook, zero dependency.` |
+| Website | _(留空)_ |
+| Topics | `claude-code` `codex` `ai-coding` `skill` `ai-agents` `project-rules` `claude-md` `agents-md` `markdown` `developer-tools` |
+| ✅ Releases | 勾选（显示 release badge） |
+| ✅ Packages | 勾选 |
+| ✅ Contributors | 勾选 |
+
+**2. 发布 v1.0.0 Release**
+
+打开 https://github.com/LetheChen/init-claude-md/releases → **Draft a new release**
+
+- Choose tag: `v1.0.0`（已推送）
+- Release title: `v1.0.0 — Initial public release`
+- Description: 复制下方内容
+
+````markdown
+## Features
+
+- 🎯 **Three layouts** — A (single file) / B (root + rules dir, default) / C (monorepo)
+- 🔀 **Merge strategy** — preserves user-written text in existing CLAUDE.md / AGENTS.md
+- 🌐 **Platform detection** — auto detects Codex / Claude Code / both
+- 🔧 **Self-maintaining** — Session Maintenance Protocol keeps rules alive
+- 🪶 **Zero hook, zero dependency**
+
+## Install
+
+### Codex
+
+`codex skill install init-claude-md`
+
+### Claude Code
+
+```bash
+git clone https://github.com/LetheChen/init-claude-md ~/.agents/skills/init-claude-md
+```
+
+Full docs: [README.md](https://github.com/LetheChen/init-claude-md/blob/main/README.md)
+````
+
+- Set as **latest release**: ✅
+- **Publish release**
+
+**3. 上传 Social Preview（可选）**
+
+打开 https://github.com/LetheChen/init-claude-md/settings → Social preview → Upload image，选择本地 `social-preview.png`（已生成在仓库根目录，已加 .gitignore）
 
 ## 🟢 后续
 

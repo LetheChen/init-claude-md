@@ -17,3 +17,6 @@ __pycache__/
 
 # Node
 node_modules/
+
+# Local assets (not tracked in repo)
+social-preview.png
