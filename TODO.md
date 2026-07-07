@@ -34,3 +34,5 @@
 - [x] AGENTS.md / CLAUDE.md Things to avoid 段加 1 条 PowerShell 写文件警告（`Get-Content | Set-Content` 会丢 CRLF + 解释 `\a` `\b` `\v` 控制字符；改用 `ReadAllBytes/WriteAllBytes` 字节级操作）(2026-07-03)
 - [x] 发布流程切换到 solo push-to-main：fast-forward 本地 main 到 5967a8f 后 push origin/main；AGENTS.md / CLAUDE.md Workflow 段改 "PR: GitHub Flow" → "Solo 维护者直接 push origin/main" (2026-07-03)
 - [x] 更新维护 GitHub 开源信息：修复 README 占位符/路径、添加 .github/ISSUE_TEMPLATE + PR_TEMPLATE、添加 CONTRIBUTING.md、更新 LICENSE 年份 (2026-07-04)
+- [x] 修复 README 中 5 处行内代码块包裹多行代码导致 GitHub 渲染合成一行的问题（改成 fenced code block），并把示例中残留的 `\references/` 反斜杠路径改成 markdown 链接 (2026-07-04)
+- [x] 更新 GitHub 开源宣传：README 加 badges (License/Claude Code/Codex/Stars/Issues/Release) + Why 表 + Features 列表 + Mermaid 工作流图 + Community 表 + Roadmap + Star History chart + 维护者署名；git tag v1.0.0 推送 (2026-07-05)
