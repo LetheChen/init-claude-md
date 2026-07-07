@@ -1,13 +1,62 @@
 # init-claude-md
 
-为项目生成**项目专属的 CLAUDE.md / AGENTS.md** + 活的 **TODO.md** 任务清单，让 Claude Code / Codex 真正读完并执行。遵循两个实战验证的模式：
+> 为项目生成**项目专属的 CLAUDE.md / AGENTS.md** + 活的 **TODO.md** 任务清单，让 Claude Code / Codex 真正读完并执行。
+> 零依赖、零 hook、跨平台、自动维护。
 
-1. **HumanLayer 极简模式** — 根文件 ≤60 行，不写目录树 / 架构概览 / 不可验证的废话。详细约定按关注点拆分到 .claude/rules/，通过 paths: frontmatter 做路径范围懒加载。
-2. **Karpathy 4 条准则** — 行为约束而非代码约束，从源头减少 LLM 编码失误：先想再写、极简优先、手术级修改、目标驱动执行。
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-supported-cc785c.svg)](https://docs.anthropic.com/en/docs/claude-code)
+[![Codex](https://img.shields.io/badge/Codex-supported-000000.svg)](https://github.com/openai/codex)
+[![Stars](https://img.shields.io/github/stars/LetheChen/init-claude-md?style=social)](https://github.com/LetheChen/init-claude-md/stargazers)
+[![Issues](https://img.shields.io/github/issues/LetheChen/init-claude-md)](https://github.com/LetheChen/init-claude-md/issues)
+[![Latest Release](https://img.shields.io/github/v/release/LetheChen/init-claude-md)](https://github.com/LetheChen/init-claude-md/releases)
 
-核心机制：**Session Maintenance Protocol**——在生成的根文件顶部嵌入 会话维护协议块。下一次会话的 agent 读到根文件，就自动知道在结束前回看本次实际做了什么、更新 TODO.md 和规则文件本身。**不需要任何外部 hook**。
+[English](#) · [简体中文](#) · [🌟 Star](https://github.com/LetheChen/init-claude-md) · [🐛 提 Issue](https://github.com/LetheChen/init-claude-md/issues/new/choose)
 
-Works on both Codex (OpenAI) and Claude Code (Anthropic).
+---
+
+## 为什么需要这个 skill？
+
+`CLAUDE.md` / `AGENTS.md` 几乎是 AI 编码工具的"项目记忆"，但 **90% 的项目没有正确生成它们**——文件超长、堆满了 AI 自己读不进去的废话、不会随项目演进。
+
+`init-claude-md` 把这件事做成**一键式 + 自维护**：
+
+| 痛点 | 解法 |
+| --- | --- |
+| 根文件越写越长（>200 行） | 硬上限 60 行；超过就触发拆分（Layout A/B/C） |
+| 规则写完就过期 | **Session Maintenance Protocol** —— 下一次会话 agent 自动按决策表更新 TODO.md 和规则 |
+| Claude Code 和 Codex 行为不一致 | 平台无关的指令描述，两边都能跑；默认双写 |
+| 装 hook 才能自动维护 | **零 hook、零依赖** —— 协议块嵌入在根文件顶部，纯靠 agent 自觉 |
+
+## Features
+
+- **📐 三种 Layout** — A（单文件） / B（根+规则目录，默认） / C（monorepo）
+- **🔀 合并策略** — 已有 CLAUDE.md / AGENTS.md 时按段处理，**绝不覆盖用户真实文本**
+- **🌐 平台检测** — 自动识别 Codex / Claude Code / 双写
+- **🔧 自我维护** — Session Maintenance Protocol 让 agent 自动续命规则文件
+- **📚 实战验证模板** — HumanLayer 极简模式 + Karpathy 4 准则
+- **🧪 自我 dogfooding** — 本仓库自己的 AGENTS.md / CLAUDE.md 就是用本 skill 生成的
+
+## 工作流概览
+
+```mermaid
+graph LR
+    A[触发 skill] --> B[扫描项目]
+    B --> C{检测平台}
+    C -->|Codex| D[写 AGENTS.md]
+    C -->|Claude Code| E[写 CLAUDE.md]
+    C -->|双写| F[写两份]
+    B --> G{决定 Layout}
+    G -->|A| H[仅根文件]
+    G -->|B| I[根+规则目录]
+    G -->|C| J[monorepo 拆分]
+    D --> K[嵌入协议头]
+    E --> K
+    F --> K
+    H --> K
+    I --> K
+    J --> K
+    K --> L[完成]
+```
 
 ## 快速开始
 
@@ -186,3 +235,33 @@ MIT — use it, fork it, ship it. Attribution appreciated but not required.
 ## Contributing
 
 欢迎提交 Issue 和 PR。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## Community
+
+| 渠道 | 链接 |
+| --- | --- |
+| 🐛 Bug 报告 | [Issue Tracker](https://github.com/LetheChen/init-claude-md/issues/new?template=bug_report.md) |
+| 💡 功能建议 | [Feature Request](https://github.com/LetheChen/init-claude-md/issues/new?template=feature_request.md) |
+| 🔀 提交代码 | [Pull Requests](https://github.com/LetheChen/init-claude-md/pulls) |
+| ⭐ 给个 Star | [Star this repo](https://github.com/LetheChen/init-claude-md) |
+| 👀 Watch 接收更新 | [Watch → All Activity](https://github.com/LetheChen/init-claude-md/watchers) |
+
+## Roadmap
+
+- [x] Layout A/B/C 决策树 + 合并策略
+- [x] Session Maintenance Protocol 软自动维护
+- [x] 跨 Codex / Claude Code 平台
+- [x] 自我 dogfooding（本仓库自带 AGENTS.md / CLAUDE.md）
+- [ ] 英文 README
+- [ ] CI 检测根文件行数（防止越线）
+- [ ] 实测更多 monorepo 框架（Nx / Turborepo / pnpm workspace）
+
+## Star History
+
+如果这个 skill 帮到了你，**点个 ⭐ Star** 就是最大的支持 ✨
+
+[![Star History Chart](https://api.star-history.com/svg?repos=LetheChen/init-claude-md&type=Date)](https://star-history.com/#LetheChen/init-claude-md&Date)
+
+---
+
+**Maintainer**: [@LetheChen](https://github.com/LetheChen) · **License**: MIT
